@@ -62,29 +62,28 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Respawn"))
+        switch (collision.gameObject.tag)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
-
-        if (collision.CompareTag("Finish"))
-        {
-            collision.GetComponent<LevelObject>().MoveToNextLevel();
-        }
-
-        if (collision.CompareTag("Enemy"))
-        {
-            if (isGiant)
-                Destroy(collision.gameObject);
-            else
+            case "Respawn":
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                break;
+            case "Finish":
+                collision.GetComponent<LevelObject>().MoveToNextLevel();
+                break;
+            case "Enemy":
+                if (isGiant)
+                    Destroy(collision.gameObject);
+                else
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                break;
+            case "Item":
+                isGiant = true;
+                Destroy(collision.gameObject);
+                break;
+            //case "Spike":
+            //    if (isGiant)
+            //        Destroy(collision.gameObject);
+            //    break;
         }
-
-        if (collision.CompareTag("Item"))
-        {
-            isGiant = true;
-            Destroy(collision.gameObject);
-        }
-
     }
 }
